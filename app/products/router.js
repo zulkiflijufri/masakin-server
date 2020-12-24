@@ -5,6 +5,9 @@ const os = require("os");
 
 const multer = require("multer");
 
+// index
+router.get("/products", productController.index);
+
 // store
 router.post(
   "/products",

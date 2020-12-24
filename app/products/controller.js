@@ -54,7 +54,17 @@ async function store(req, res, next) {
   }
 }
 
+async function index(req, res, next) {
+  try {
+    let products = await Product.find();
+    return res.json(products);
+  } catch (error) {
+    next(error);
+  }
+}
+
 // export for use in router
 module.exports = {
+  index,
   store,
 };
