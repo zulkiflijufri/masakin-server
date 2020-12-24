@@ -1,3 +1,3 @@
-## Create food app with react and express
+## Create food app API with ExpressJS
 
-> Implementation from learning by doing with react and express :rocket:
+> Implementation from learning by doing with ExpressJS :rocket:
