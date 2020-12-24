@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Product = require("./model");
 
 async function store(req, res, next) {
@@ -9,6 +10,14 @@ async function store(req, res, next) {
 
     return res.json(product);
   } catch (error) {
+    if (error && error.name === "ValidationError") {
+      return res.json({
+        error: 1,
+        message: error.message,
+        fields: error.errors,
+      });
+    }
+
     next(error);
   }
 }
