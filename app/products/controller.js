@@ -205,8 +205,14 @@ async function getById(req, res, next) {
 
 async function index(req, res, next) {
   try {
-    const { limit = 10, skip = 0 } = req.query;
-    let products = await Product.find()
+    const { limit = 10, skip = 0, q = "" } = req.query;
+    let criteria = {};
+
+    if (q.length) {
+      criteria = { ...criteria, name: { $regex: `${q}`, $options: "i" } }; // "i" => incasesensitive
+    }
+
+    let products = await Product.find(criteria)
       .limit(parseInt(limit))
       .skip(parseInt(skip))
       .populate("category")
