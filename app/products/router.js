@@ -15,4 +15,14 @@ router.post(
   productController.store
 );
 
+// update
+router.put(
+  "/products/:id",
+  multer({ dest: os.tmpdir() }).single("image"),
+  productController.update
+);
+
+// delete
+router.delete("/products/:id", productController.destroy);
+
 module.exports = router;
