@@ -1,4 +1,5 @@
 const config = require("../config");
+const Category = require("../categories/model");
 const Product = require("./model");
 
 const path = require("path");
@@ -24,6 +25,18 @@ async function destroy(req, res, next) {
 async function update(req, res, next) {
   try {
     let payload = req.body;
+
+    if (payload.category) {
+      let category = await Category.findOne({
+        name: { $regex: payload.category, $options: "i" }, // "i" => in case sensitive
+      });
+
+      if (category) {
+        payload = { ...payload, category: category._id };
+      } else {
+        delete payload.category;
+      }
+    }
 
     if (req.file) {
       let tmp_path = req.file.path;
@@ -99,6 +112,18 @@ async function store(req, res, next) {
   try {
     let payload = req.body;
 
+    if (payload.category) {
+      let category = await Category.findOne({
+        name: { $regex: payload.category, $options: "i" }, // "i" => in case sensitive
+      });
+
+      if (category) {
+        payload = { ...payload, category: category._id };
+      } else {
+        delete payload.category;
+      }
+    }
+
     if (req.file) {
       let tmp_path = req.file.path;
       let originalExt = req.file.originalname.split(".")[
@@ -145,6 +170,18 @@ async function store(req, res, next) {
   }
 }
 
+async function getById(req, res, next) {
+  try {
+    let productWithCategory = await Product.findOne({
+      _id: req.params.id,
+    }).populate("category");
+
+    return res.json(productWithCategory);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function index(req, res, next) {
   try {
     const { limit = 10, skip = 0 } = req.query;
@@ -160,6 +197,7 @@ async function index(req, res, next) {
 
 // export for use in router
 module.exports = {
+  getById,
   index,
   store,
   update,

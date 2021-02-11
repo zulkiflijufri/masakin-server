@@ -8,6 +8,9 @@ const multer = require("multer");
 // index
 router.get("/products", productController.index);
 
+// getById
+router.get("/products/:id", productController.getById);
+
 // store
 router.post(
   "/products",
