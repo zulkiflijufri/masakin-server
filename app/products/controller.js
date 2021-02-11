@@ -205,7 +205,7 @@ async function getById(req, res, next) {
 
 async function index(req, res, next) {
   try {
-    let { limit = 10, skip = 0, q = "", category = "" } = req.query;
+    let { limit = 10, skip = 0, q = "", category = "", tags = [] } = req.query;
     let criteria = {};
 
     // filter by name
@@ -221,6 +221,14 @@ async function index(req, res, next) {
 
       if (category) {
         criteria = { ...criteria, category: category._id };
+      }
+    }
+
+    // filter by tags (ex: ['hot','cool'] or ['hot'])
+    if (tags.length) {
+      tags = await Tag.find({ name: { $in: tags } });
+      if (tags) {
+        criteria = { ...criteria, tags: { $in: tags.map((tag) => tag._id) } };
       }
     }
 
