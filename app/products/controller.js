@@ -1,6 +1,7 @@
 const config = require("../config");
 const Category = require("../categories/model");
 const Product = require("./model");
+const Tag = require("../tags/model");
 
 const path = require("path");
 const fs = require("fs");
@@ -35,6 +36,16 @@ async function update(req, res, next) {
         payload = { ...payload, category: category._id };
       } else {
         delete payload.category;
+      }
+    }
+
+    if (payload.tags && payload.tags.length) {
+      // find tags
+      let tags = await Tag.find({ name: { $in: payload.tags } });
+
+      if (tags.length) {
+        // merge tags with payload
+        payload = { ...payload, tags: tags.map((tag) => tag._id) };
       }
     }
 
@@ -84,7 +95,7 @@ async function update(req, res, next) {
         next(error);
       });
     } else {
-      let product = new Product.findOneAndUpdate(
+      let product = await Product.findOneAndUpdate(
         { _id: req.params.id },
         payload,
         {
@@ -121,6 +132,16 @@ async function store(req, res, next) {
         payload = { ...payload, category: category._id };
       } else {
         delete payload.category;
+      }
+    }
+
+    if (payload.tags && payload.tags.length) {
+      // find tags
+      let tags = await Tag.find({ name: { $in: payload.tags } });
+
+      if (tags.length) {
+        // merge tags with payload
+        payload = { ...payload, tags: tags.map((tag) => tag._id) };
       }
     }
 
@@ -187,7 +208,9 @@ async function index(req, res, next) {
     const { limit = 10, skip = 0 } = req.query;
     let products = await Product.find()
       .limit(parseInt(limit))
-      .skip(parseInt(skip));
+      .skip(parseInt(skip))
+      .populate("category")
+      .populate("tags");
 
     return res.json(products);
   } catch (error) {
