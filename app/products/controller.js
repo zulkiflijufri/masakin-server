@@ -205,11 +205,23 @@ async function getById(req, res, next) {
 
 async function index(req, res, next) {
   try {
-    const { limit = 10, skip = 0, q = "" } = req.query;
+    let { limit = 10, skip = 0, q = "", category = "" } = req.query;
     let criteria = {};
 
+    // filter by name
     if (q.length) {
       criteria = { ...criteria, name: { $regex: `${q}`, $options: "i" } }; // "i" => incasesensitive
+    }
+
+    // filter by category (ex: "Drink")
+    if (category.length) {
+      category = await Category.findOne({
+        name: { $regex: `${category}`, $options: "i" },
+      });
+
+      if (category) {
+        criteria = { ...criteria, category: category._id };
+      }
     }
 
     let products = await Product.find(criteria)
