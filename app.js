@@ -19,9 +19,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // import router
 const productRouter = require("./app/products/router");
 const categoryRouter = require("./app/categories/router");
+const tagRouter = require("./app/tags/router");
 
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
+app.use("/api", tagRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
