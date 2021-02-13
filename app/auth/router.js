@@ -15,4 +15,10 @@ passport.use(
   new LocalStrategy({ usernameField: "email" }, controller.localStrategy)
 );
 
+// me
+router.get("/me", controller.me);
+
+// logout
+router.post("/logout", controller.logout);
+
 module.exports = router;

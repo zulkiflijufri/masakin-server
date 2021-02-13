@@ -4,6 +4,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+const { decodeToken } = require("./app/auth/middleware");
+
 var app = express();
 
 // view engine setup
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(decodeToken());
 
 // import router
 const productRouter = require("./app/products/router");
