@@ -37,7 +37,7 @@ const userSchema = Schema(
 );
 
 // custom validation email
-userSchema.path("email").validated(
+userSchema.path("email").validate(
   (value) => {
     // regex
     const EMAIL_RE = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -47,7 +47,7 @@ userSchema.path("email").validated(
 );
 
 // custiom validation unique email
-userSchema.path("email").validated(
+userSchema.path("email").validate(
   async (value) => {
     try {
       // (1) find email
