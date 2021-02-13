@@ -46,9 +46,9 @@ userSchema.path("email").validate(
   (attr) => `${attr.value} harus merupakan email yang valid`
 );
 
-// custiom validation unique email
+// custom validation unique email
 userSchema.path("email").validate(
-  async (value) => {
+  async function (value) {
     try {
       // (1) find email
       const count = await this.model("User").count({ email: value });
@@ -64,7 +64,7 @@ userSchema.path("email").validate(
 );
 
 // hash password (mongoose hook)
-userSchema.pre("save", (next) => {
+userSchema.pre("save", function (next) {
   this.password = bcrypt.hashSync(this.password, HASH_ROUND);
   next();
 });
