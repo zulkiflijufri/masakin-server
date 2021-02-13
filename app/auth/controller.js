@@ -47,14 +47,14 @@ async function login(req, res, next) {
       { $push: { token: signed } },
       { new: true }
     );
-  })(req, res, next);
 
-  // (3) res client
-  return res.json({
-    message: "Logged in succesfully",
-    user: user,
-    token: signed,
-  });
+    // (3) res client
+    return res.json({
+      message: "Logged in succesfully",
+      user: user,
+      token: signed,
+    });
+  })(req, res, next);
 }
 
 async function localStrategy(email, password, done) {
