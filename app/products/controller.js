@@ -264,9 +264,12 @@ async function index(req, res, next) {
       .limit(parseInt(limit))
       .skip(parseInt(skip))
       .populate("category")
-      .populate("tags");
+      .populate("tags")
+      .select("-__v");
 
-    return res.json(products);
+    let count = await Product.find(criteria).countDocuments();
+
+    return res.json({ data: products, count });
   } catch (error) {
     next(error);
   }
