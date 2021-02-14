@@ -24,11 +24,13 @@ const productRouter = require("./app/products/router");
 const categoryRouter = require("./app/categories/router");
 const tagRouter = require("./app/tags/router");
 const authRouter = require("./app/auth/router");
+const wilayahRouter = require("./app/wilayah/router");
 
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
 app.use("/api", tagRouter);
 app.use("/auth", authRouter);
+app.use("/api", wilayahRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
