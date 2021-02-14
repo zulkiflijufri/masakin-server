@@ -10,7 +10,7 @@ router.get("/wilayah/kabupaten", wilayahController.getKabupaten);
 // getKecamatan
 router.get("/wilayah/kecamatan", wilayahController.getKecamatan);
 
-// getKecamatan
+// getDesa
 router.get("/wilayah/desa", wilayahController.getDesa);
 
 module.exports = router;
